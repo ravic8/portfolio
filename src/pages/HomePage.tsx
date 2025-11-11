@@ -4,7 +4,7 @@ import Reveal from "../components/Reveal";
 import { siteConfig } from "../config/siteConfig";
 
 export default function HomePage() {
-  const { name, tagline, description, links, home } = siteConfig;
+  const { name, tagline, description, links } = siteConfig;
 
   return (
     <>
