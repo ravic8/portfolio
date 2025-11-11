@@ -8,6 +8,8 @@ import {
 } from "react-router-dom";
 import Layout from "./components/Layout";
 import { AnimatePresence } from "framer-motion";
+import { siteConfig } from "config/siteConfig";
+import { Helmet } from "react-helmet-async";
 
 // --- Lazy-loaded pages (unique names to avoid collisions) ---
 const HomePage = lazy(() => import("./pages/HomePage"));
@@ -79,6 +81,12 @@ function AppInner() {
   const location = useLocation();
   return (
     <>
+      <Helmet>
+        <title>{siteConfig.AuthorName}</title>
+        <meta name="description" content={siteConfig.description} />
+        <link rel="icon" href="/generative.png" />
+        <link rel="apple-touch-icon" href="/generative.png" />
+      </Helmet>
       <ScrollToTop />
       <ErrorBoundary>
         <Layout>

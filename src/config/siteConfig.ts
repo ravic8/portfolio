@@ -43,9 +43,14 @@ export type Blog = {
 };
 
 export type SiteConfig = {
+  AuthorName: string;
   name: string;
   tagline: string;
   description: string;
+  email_g: string;
+  home:{
+    card1_des: string;
+  }
   links: {
     github: string;
     linkedin: string;
@@ -59,16 +64,27 @@ export type SiteConfig = {
   about: About;
   projects: Project[];
   blogs: Blog[];
+  contact: {
+    hero_title: string;
+    hero_description: string;
+    availability: string;
+  }
 };
 
 // ---- Config ----
 export const siteConfig: SiteConfig = {
   // --- Global ---
+  AuthorName: "ingloriousAI",
   name: "Raviteja NB",
   tagline: "Data Engineering & AI Systems",
   description: `I build reliable data platforms and forecasting pipelines on AWS.
-Recently: MLflow + Airflow for 2000+ sites, ClickHouse tuned with
-MVs/partitions, and low-latency Kafka/WebSocket streams for market data.`,
+    Recently: MLflow + Airflow for 2000+ sites, ClickHouse tuned with
+    MVs/partitions, and low-latency Kafka/WebSocket streams for market data.`,
+  email_g:"ravitejanb@gmail.com",
+
+  home:{
+    card1_des: "Data platforms, forecasting pipelines, and real-time streams with AWS, Airflow, ClickHouse, and MLflow.",
+  },
 
   links: {
     github: "https://github.com/ravic8",
@@ -167,7 +183,7 @@ MVs/partitions, and low-latency Kafka/WebSocket streams for market data.`,
           "Designed and deployed a real-time training dashboard, tracking 120+ programs annually and 30,000+ participant training days; provided leadership with actionable metrics for planning and resource allocation.",
           "Program-managed collaborations with top national consultancies (CPWD, CMPDI) to deliver projects worth Rs. 18 crores in a 3-year timeline, ensuring budget adherence, contract compliance, and reporting.",
           "Bridged technical implementation (dashboards, systems integration) with strategic leadership — ensuring systems were reliable, scalable, and aligned with organizational goals."
-  ],
+        ],
       },
     ],
     achievements: [
@@ -315,17 +331,21 @@ MVs/partitions, and low-latency Kafka/WebSocket streams for market data.`,
       content: [
         { type: "p", text: "Coordinating thousands of location-scoped retrains sounds glamorous—until you hit cost blowups and brittle DAGs." },
         { type: "h2", text: "Key Design Choices" },
-        { type: "ul", items: [
-          "A single DAG per domain with dynamic mapping for locations; capped concurrency.",
-          "MLflow for metrics, lineage, and model registry—nothing ships without tracked evidence.",
-          "Strict canary deploys with evaluation + data quality gates.",
-        ]},
+        {
+          type: "ul", items: [
+            "A single DAG per domain with dynamic mapping for locations; capped concurrency.",
+            "MLflow for metrics, lineage, and model registry—nothing ships without tracked evidence.",
+            "Strict canary deploys with evaluation + data quality gates.",
+          ]
+        },
         { type: "h2", text: "Failure Handling that Works" },
-        { type: "ul", items: [
-          "Idempotent tasks with artifact dedupe and TTLs.",
-          "Backfills via catchup windows; avoid \"infinite yesterday\".",
-          "Alert budgets that page only when SLOs degrade, not for every whisper.",
-        ]},
+        {
+          type: "ul", items: [
+            "Idempotent tasks with artifact dedupe and TTLs.",
+            "Backfills via catchup windows; avoid \"infinite yesterday\".",
+            "Alert budgets that page only when SLOs degrade, not for every whisper.",
+          ]
+        },
         { type: "p", text: "The result: consistent retrains with auditable lineage and fewer pager rotations." },
       ],
     },
@@ -341,17 +361,21 @@ MVs/partitions, and low-latency Kafka/WebSocket streams for market data.`,
       content: [
         { type: "h2", text: "Model Tables for the Questions You’ll Ask" },
         { type: "p", text: "Skew and join explosions vanish when facts/dims are shaped to the queries that matter." },
-        { type: "ul", items: [
-          "MV pre-aggregations for hot dashboards.",
-          "Partitioning by date + id to bound merges.",
-          "ZSTD + codecs: balance storage and CPU cycles.",
-        ]},
+        {
+          type: "ul", items: [
+            "MV pre-aggregations for hot dashboards.",
+            "Partitioning by date + id to bound merges.",
+            "ZSTD + codecs: balance storage and CPU cycles.",
+          ]
+        },
         { type: "h2", text: "Ops Tips" },
-        { type: "ul", items: [
-          "Hot subsets to dodge cold S3 starts.",
-          "Query memory limits and grace re-tries.",
-          "Observe background merges—don’t let them starve selects.",
-        ]},
+        {
+          type: "ul", items: [
+            "Hot subsets to dodge cold S3 starts.",
+            "Query memory limits and grace re-tries.",
+            "Observe background merges—don’t let them starve selects.",
+          ]
+        },
       ],
     },
     {
@@ -365,16 +389,20 @@ MVs/partitions, and low-latency Kafka/WebSocket streams for market data.`,
         "Real-time market data for 50+ assets means solving bursty opens, backpressure, and idempotency—without breaking the bank.",
       content: [
         { type: "h2", text: "Architecture in Brief" },
-        { type: "ul", items: [
-          "WS fan-in → Kafka → consumers (ETL, fan-out, storage).",
-          "Time-partitioned S3 for backtests; Redshift/Spark for analysis.",
-        ]},
+        {
+          type: "ul", items: [
+            "WS fan-in → Kafka → consumers (ETL, fan-out, storage).",
+            "Time-partitioned S3 for backtests; Redshift/Spark for analysis.",
+          ]
+        },
         { type: "h2", text: "Keeping Latency Honest" },
-        { type: "ul", items: [
-          "End-to-end markers, not just broker lag.",
-          "Producer acks, linger.ms, and compression tuned per topic.",
-          "Idempotent writes with ordered keys; handle out-of-order events.",
-        ]},
+        {
+          type: "ul", items: [
+            "End-to-end markers, not just broker lag.",
+            "Producer acks, linger.ms, and compression tuned per topic.",
+            "Idempotent writes with ordered keys; handle out-of-order events.",
+          ]
+        },
       ],
     },
     {
@@ -389,16 +417,20 @@ MVs/partitions, and low-latency Kafka/WebSocket streams for market data.`,
       content: [
         { type: "p", text: "Rules get you started; residuals keep you honest. We mix classical and DL models for robust signals." },
         { type: "h2", text: "Recipe" },
-        { type: "ul", items: [
-          "Features for seasonality, trend, holidays; rolling windows per segment.",
-          "Prophet/LGBM/LSTM ensembles; MLflow to track and compare.",
-          "Residual smoothing and alert aggregation to reduce noise.",
-        ]},
+        {
+          type: "ul", items: [
+            "Features for seasonality, trend, holidays; rolling windows per segment.",
+            "Prophet/LGBM/LSTM ensembles; MLflow to track and compare.",
+            "Residual smoothing and alert aggregation to reduce noise.",
+          ]
+        },
         { type: "h2", text: "Cold Starts & Sparse Segments" },
-        { type: "ul", items: [
-          "Borrow strength across segments; use priors.",
-          "Fallback models with conservative thresholds.",
-        ]},
+        {
+          type: "ul", items: [
+            "Borrow strength across segments; use priors.",
+            "Fallback models with conservative thresholds.",
+          ]
+        },
       ],
     },
     {
@@ -412,18 +444,27 @@ MVs/partitions, and low-latency Kafka/WebSocket streams for market data.`,
         "From on-prem SQL Server to RA3-backed Redshift with 5GB/day feeds: patterns that spared us pain.",
       content: [
         { type: "h2", text: "Pipeline Basics" },
-        { type: "ul", items: [
-          "S3 staging + manifest loads; partitioned by dt/source.",
-          "Glue/Lambda orchestration for incremental + history loads.",
-          "Idempotent upserts and late-arrival handling.",
-        ]},
+        {
+          type: "ul", items: [
+            "S3 staging + manifest loads; partitioned by dt/source.",
+            "Glue/Lambda orchestration for incremental + history loads.",
+            "Idempotent upserts and late-arrival handling.",
+          ]
+        },
         { type: "h2", text: "Performance & Cost" },
-        { type: "ul", items: [
-          "Sort/dist keys that match your biggest joins.",
-          "RA3 for separated storage/compute; pause/resize policies.",
-          "Monitoring that focuses on user-facing SLAs, not vanity metrics.",
-        ]},
+        {
+          type: "ul", items: [
+            "Sort/dist keys that match your biggest joins.",
+            "RA3 for separated storage/compute; pause/resize policies.",
+            "Monitoring that focuses on user-facing SLAs, not vanity metrics.",
+          ]
+        },
       ],
     },
   ],
+  contact: {
+    hero_title: "Let’s build something reliable",
+    hero_description: "I design data platforms, streaming systems, and ML pipelines. The fastest way to reach me is email; I also respond on LinkedIn.",
+    availability: "Open to data engineering consulting (pipelines, streaming, ClickHouse, forecasting) and full-time roles aligned with platform reliability and ML operations."
+  }
 };

@@ -29,11 +29,10 @@ export default function Contact() {
           Contact
         </p>
         <h1 className="mt-2 text-3xl sm:text-4xl font-extrabold text-neutral-900">
-          Let’s build something reliable
+          {siteConfig.contact.hero_title}
         </h1>
         <p className="mt-3 text-neutral-700">
-          I design data platforms, streaming systems, and ML pipelines. The fastest way
-          to reach me is email; I also respond on LinkedIn.
+          {siteConfig.contact.hero_description}
         </p>
       </Reveal>
 
@@ -43,7 +42,7 @@ export default function Contact() {
         <div className="card">
           <h2 className="text-lg font-semibold text-neutral-900">Direct</h2>
           <div className="mt-3 grid gap-3 text-neutral-700">
-            <CopyField label="Email" value="ravitejanb@gmail.com" />
+            <CopyField label="Email" value={siteConfig.email_g} />
             <CopyField label="Phone" value={phoneRaw} />
           </div>
           <div className="mt-4 flex flex-wrap gap-3">
@@ -61,9 +60,9 @@ export default function Contact() {
         </div>
 
         {/* Socials */}
-        <div className="card">
+        <div className="card p-6">
           <h2 className="text-lg font-semibold text-neutral-900">Profiles</h2>
-          <div className="mt-3 grid gap-2 text-neutral-700">
+          <div className="mt-3 grid gap-4 text-neutral-700">
             <LinkRow label="LinkedIn" href={siteConfig.links.linkedin} />
             <LinkRow label="GitHub" href={siteConfig.links.github} />
             <LinkRow label="Code360" href={siteConfig.links.code360!} />
@@ -126,14 +125,13 @@ export default function Contact() {
       <Reveal className="mt-8 card">
         <h2 className="text-lg font-semibold text-neutral-900">Availability</h2>
         <p className="mt-2 text-neutral-700">
-          Open to data engineering consulting (pipelines, streaming, ClickHouse, forecasting) and full-time roles aligned with
-          platform reliability and ML operations.
+          {siteConfig.contact.availability}
         </p>
       </Reveal>
 
       {/* Micro-footer */}
       <Reveal className="mt-10 text-center text-sm text-neutral-500">
-        Prefer email? <a href={siteConfig.links.email} className="underline">ravitejanb@gmail.com</a> • {phoneDisplay}
+        Prefer email? <a href={siteConfig.links.email} className="underline">{siteConfig.email_g}</a> • {phoneDisplay}
       </Reveal>
     </section>
   );
@@ -145,10 +143,10 @@ function LinkRow({ label, href }: { label: string; href: string }) {
       href={href}
       target="_blank"
       rel="noreferrer"
-      className="flex items-center justify-between rounded-xl border border-neutral-200 bg-white px-3 py-2 hover:bg-neutral-50"
+      className="flex items-center justify-between gap-8 rounded-xl border border-neutral-200 bg-white px-3 py-2 hover:bg-neutral-50"
     >
-      <span>{label}</span>
-      <span className="text-neutral-500 text-sm">{href.replace(/^https?:\/\//, "")}</span>
+      <span className="font-medium flex-shrink-0">{label}</span>
+      <span className="text-sm text-neutral-700 text-right break-all min-w-0">{href.replace(/^https?:\/\//, "")}</span>
     </a>
   );
 }
