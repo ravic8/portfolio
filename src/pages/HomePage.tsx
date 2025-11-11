@@ -58,7 +58,7 @@ export default function HomePage() {
             <div className="text-2xl">⚡</div>
             <h2 className="mt-2 text-lg font-semibold text-neutral-900">What I do</h2>
             <p className="mt-2 text-neutral-700">
-              Data platforms, forecasting pipelines, and real-time streams with AWS, Airflow, ClickHouse, and MLflow.
+              {siteConfig.home.card1_des}
             </p>
           </motion.div>
         </Reveal>
