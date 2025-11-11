@@ -1,470 +1,327 @@
 // src/config/siteConfig.ts
 
-// ---- Types ----
-export type Project = {
-  slug: string;
-  title: string;
-  summary: string;
-  problem: string;
-  approach: string[];
-  challenges?: string[];
-  optimizations?: string[];
-  impact?: string;
-  tech: string[];
-  images?: string[];
-};
-
-type About = {
-  summary: string[];
-  skills: { title: string; items: string[] }[];
-  timeline: { date: string; title: string; description: string; tags?: string[] }[];
-  experience: { company: string; role: string; period: string; domain?: string; bullets: string[] }[];
-  achievements: string[];
-  education: string[];
-  certifications: string[];
-};
-
-// Blog rich content blocks
 export type BlogBlock =
   | { type: "h2"; text: string }
   | { type: "p"; text: string }
   | { type: "ul"; items: string[] }
-  | { type: "code"; lang?: string; text: string };
+  | { type: "code"; lang?: string; code: string };
 
 export type Blog = {
   slug: string;
   title: string;
-  date: string; // ISO or yyyy-mm-dd
-  readingTimeMins: number;
+  date: string;            // ISO or human-readable
   tags: string[];
-  hero?: string; // /blog/<slug>/hero.jpg
   excerpt: string;
+  readingTimeMins?: number;
+  hero?: string;           // optional blog hero image
   content: BlogBlock[];
 };
 
-export type SiteConfig = {
-  AuthorName: string;
-  name: string;
-  tagline: string;
-  description: string;
-  email_g: string;
-  home:{
-    card1_des: string;
-  }
-  links: {
-    github: string;
-    linkedin: string;
-    email: string;
-    code360?: string;
-    leetcode?: string;
-    phone?: string;
-  };
-  wins: string[];
-  current: string;
-  about: About;
-  projects: Project[];
-  blogs: Blog[];
-  contact: {
-    hero_title: string;
-    hero_description: string;
-    availability: string;
-  }
+export type Project = {
+  slug: string;
+  title: string;
+  summary: string;
+  problem?: string;
+  approach: string[];      // required to avoid optional TS errors
+  challenges: string[];
+  optimizations: string[];
+  impact?: string;
+  tech: string[];          // required
+  images?: string[];
+  tags?: string[];
 };
 
-// ---- Config ----
-export const siteConfig: SiteConfig = {
-  // --- Global ---
-  AuthorName: "ingloriousAI",
+export const siteConfig = {
+  // ---- Branding ----
   name: "Raviteja NB",
-  tagline: "Data Engineering & AI Systems",
-  description: `I build reliable data platforms and forecasting pipelines on AWS.
-    Recently: MLflow + Airflow for 2000+ sites, ClickHouse tuned with
-    MVs/partitions, and low-latency Kafka/WebSocket streams for market data.`,
-  email_g:"ravitejanb@gmail.com",
+  authorName: "Raviteja NB",
+  // legacy key used by some components:
+  AuthorName: "Raviteja NB",
 
-  home:{
-    card1_des: "Data platforms, forecasting pipelines, and real-time streams with AWS, Airflow, ClickHouse, and MLflow.",
-  },
+  tagline: "Data Scientist (6+ yrs) • GenAI (3 yrs) • IIT Madras",
+  description:
+    "Data Scientist with 6+ years of experience building predictive, data-intelligent systems that combine forecasting, anomaly detection, and agentic AI to transform data into autonomous decision intelligence.",
+
+  // some components read this directly:
+  email_g: "ravitejanb@gmail.com",
 
   links: {
+    email: "mailto:ravitejanb@gmail.com",
+    phone: "+91-9940599597",
     github: "https://github.com/ravic8",
     linkedin: "https://www.linkedin.com/in/raviteja-n-b-aab389119/",
-    email: "mailto:ravitejanb@gmail.com",
     code360: "https://www.naukri.com/code360/profile/7f5f63ae-dd85-4ccb-ad7b-2371ea6dd314",
     leetcode: "https://leetcode.com/u/ravitejanb/",
-    phone: "+91 9940599597",
   },
 
+  // ---- Home (legacy consumers expect these) ----
   wins: [
-    "2000+ sites on ML pipelines",
-    "10–20ms streaming latencies",
-    "~50% faster ClickHouse queries",
+    "Cut query latency ~50% with ClickHouse partitions + MVs for live dashboards.",
+    "Airflow + MLflow pipeline across 20k+ IoT sites.",
+    "Top 20% globally in WorldQuant BRAIN IQC 2024.",
+  ],
+  current: [
+    "Operational analytics & predictive maintenance (SiteIQ).",
+    "Agentic research stack for market intelligence (Atlas/Lens).",
   ],
 
-  current: `Writing weekly and building Atlas (data engineering observer) — case studies on the blog.`,
+  home: {
+    card1_des:
+      "I design production-grade forecasting and anomaly systems, ship agentic pipelines that automate data quality and reporting, and optimize warehouses for low-latency analytics.",
+    whatIDo: [
+      "Time-series forecasting & anomaly detection in production.",
+      "Agentic pipelines (LLMs + tools) for data/ML ops.",
+      "Analytics on ClickHouse/Timescale/Redshift.",
+    ],
+    recentWins: [
+      "↓ ~50% query latency via ClickHouse MVs/partitions.",
+      "10k+ site ML pipeline with Airflow + MLflow.",
+      "Ranking & backtests automation for markets.",
+    ],
+    currently: [
+      "SiteIQ: forecasting, anomalies, predictive maintenance.",
+      "Atlas/Lens: agentic research & reporting.",
+    ],
+  },
 
-  // --- ABOUT ---
+  // ---- About ----
   about: {
     summary: [
-      `Experienced Data Engineer with hands-on design & implementation of scalable data systems across ML pipelines, streaming, data warehousing, and cloud. Focused on reliable, observable pipelines that enable analytics & forecasting.`,
-      `Strengths include ClickHouse/Redshift performance tuning, MLflow/Airflow orchestration, Kafka/WebSockets for low-latency delivery, and pragmatic AWS data architecture.`,
+      "Data Scientist with 6+ years blending data engineering & ML to ship decision automation. ~3 years building GenAI/agentic systems for financial research and operations.",
+      "Tooling: Python, SQL, Airflow, MLflow, Polars/Pandas, ClickHouse/Timescale/Redshift, Kafka, FastAPI, Rust (exploring). Forecasting (Prophet/LightGBM/LSTM), anomaly detection, model serving.",
+      "IIT Madras alumnus; MSc Financial Engineering (WorldQuant University, 2025–27).",
     ],
     skills: [
-      { title: "Data & Storage", items: ["ClickHouse", "Redshift", "PostgreSQL", "S3/Lakehouse", "Parquet/ICEBERG"] },
-      { title: "Pipelines", items: ["Airflow", "Kafka", "Spark", "dbt", "AWS Glue", "Step Functions"] },
-      { title: "ML & Ops", items: ["MLflow", "Prophet", "LightGBM", "LSTM", "Batch/Online Inference"] },
-      { title: "Infra & Tooling", items: ["AWS", "Docker", "Terraform", "CI/CD", "Lambda", "SNS"] },
-      { title: "Languages", items: ["Python", "SQL", "TypeScript"] },
+      { title: "ML & GenAI", items: ["Forecasting (Prophet/LightGBM/LSTM)", "Anomaly detection", "RAG/agents", "Evaluation/guardrails"] },
+      { title: "Data Engineering", items: ["Airflow/Mage", "Kafka", "ClickHouse/Timescale/Redshift", "S3/Glue/Lambda", "MLflow/DBT", "CI/CD"] },
+      { title: "Backend", items: ["FastAPI", "Rust (exploring)", "REST/gRPC", "Serverless"] },
+      { title: "Frontend", items: ["React", "TypeScript"] },
+      { title: "Viz", items: ["Plotly/Plotly Express", "Dash/Streamlit", "Plausible/Umami"] },
     ],
+
+    // Education: B.Tech & M.Tech at IIT Madras; keep MSc
+    education: [
+      "M.Sc. Financial Engineering — WorldQuant University (2025–27)",
+      "B.Tech & M.Tech — IIT Madras",
+    ],
+
+    // Certifications: keep other certs here (not the two achievements)
+    certifications: [
+      "Data Structures and Algorithms — Coding Ninjas (Aug 2024)",
+      "Introduction to Python — Coding Ninjas (Apr 2024)",
+      "Supervised Machine Learning: Regression & Classification — DeepLearning.AI (Feb 2024)",
+    ],
+
+    // NEW: Achievements block (rendered on About page)
+    achievements: [
+      "WorldQuant BRAIN — Gold Level & Top 20% Global (Apr 2024)",
+      "CAT 2023 — 96.48 percentile",
+    ],
+
+    // (kept for reference; About page uses experience as the single source)
     timeline: [
       {
-        date: "Feb 2025 — Present",
-        title: "Senior Data Engineer · QTRAMS IT Solutions",
-        description:
-          "End-to-end ML pipelines for 2000+ sites with MLflow + Airflow; forecasting models (Prophet, LightGBM, LSTM); ClickHouse perf tuning with dedup, MVs, partitions (≈50% faster).",
-        tags: ["MLflow", "Airflow", "ClickHouse", "Forecasting"],
+        date: "Feb 2025 – Present",
+        title: "Senior AI/ML Engineer — QTRAMS (SiteIQ)",
+        description: "Predictive maintenance, anomaly detection, and realtime ops analytics.",
+        tags: ["Time-series", "MLOps", "ClickHouse"],
+        points: [
+          "Airflow + MLflow pipeline across 10k+ IoT retail sites.",
+          "Forecasting & anomaly detection for proactive maintenance.",
+          "Realtime intelligence layer in ClickHouse; partitions+MVs → ~50% faster queries.",
+        ],
       },
       {
-        date: "Jun 2024 — Jan 2025",
-        title: "Data Engineer · NSK Software Solutions",
-        description:
-          "Low-latency (10–20ms) Kafka/WebSocket streaming for 50+ assets; AWS S3 lake for backtests; Redshift + Spark analytics. Also built 50+ pipelines for marketplace inventory sync with S3/Glue/RDS and near-real-time Step Functions + Lambda.",
-        tags: ["Kafka", "WebSockets", "S3", "Redshift", "Spark", "Glue", "Lambda"],
+        date: "Aug 2023 – Jan 2025",
+        title: "AI/ML Engineer — NSK Software Solutions",
+        description: "Streaming inference for markets; agentic research stack.",
+        tags: ["Streaming", "Finance", "Agents"],
+        points: [
+          "Kafka + Rust + FastAPI microservices for <20 ms signals.",
+          "LightGBM/LSTM forecasting + backtests; strategy scoring.",
+          "Timeseries warehouse on S3 + Timescale/Redshift; Airflow digests.",
+        ],
       },
       {
-        date: "Jan 2022 — Feb 2023",
-        title: "Data Migration · eCommerce & Retail",
-        description:
-          "5TB on-prem SQL Server → Redshift; ~5GB/day loads via S3, Glue, Lambda, SNS; ETL automation, performance tuning (RA3, partitioning, indexing), logging & monitoring.",
-        tags: ["Migration", "Redshift", "ETL", "AWS"],
+        date: "Jan 2022 – Jul 2023",
+        title: "AI/ML Engineer — AeroPartsNow (eCommerce)",
+        description: "Inventory intelligence & demand forecasting.",
+        tags: ["eCommerce", "Forecasting"],
+        points: [
+          "Pipelines on AWS S3/Glue/RDS with MLflow monitoring.",
+          "Sales-trend & supplier scoring; ~35% planning lift.",
+        ],
+      },
+      {
+        date: "Aug 2016 – Nov 2021",
+        title: "Operations Manager — Coal India Ltd.",
+        description: "Digital ops & dashboards; spares planning pilots.",
+        tags: ["Ops", "Dashboards", "Inventory"],
+        points: [
+          "eTendering rollout → 50% faster cycles; ₹10+ cr e-procurement.",
+          "Realtime training dashboards across 120+ programs.",
+          "ML-assisted spares planning for heavy equipment at CCL depots.",
+        ],
       },
     ],
+
     experience: [
       {
-        company: "QTRAMS IT Solutions",
-        role: "Senior Data Engineer",
-        period: "Feb 2025 — Present",
-        domain: "Gas stations ops, ML pipelines",
+        company: "QTRAMS (SiteIQ)",
+        role: "Senior AI/ML Engineer",
+        period: "Feb 2025 – Present",
+        domain: "Operational analytics & predictive maintenance",
         bullets: [
-          "E2E ML pipelines for 2000+ sites (MLflow + Airflow) with reproducible workflows",
-          "Forecasting using Prophet, LightGBM, LSTM; anomaly detection > 90% accuracy",
-          "ClickHouse optimization via dedup, materialized views, partitioning (~50% faster)",
+          "Airflow + MLflow pipeline across 10k+ IoT sites.",
+          "Forecasting & anomaly detection (>90% targets) for proactive maintenance.",
+          "ClickHouse MVs/partitions → ~50% faster analytics.",
         ],
       },
       {
         company: "NSK Software Solutions",
-        role: "Data Engineer",
-        period: "Jun 2024 — Jan 2025",
-        domain: "Algorithmic Trading (Project TradeLens); eCommerce inventory",
+        role: "AI/ML Engineer",
+        period: "Jan 2022 – Jan 2025",
+        domain: "Data Science & ML for FinTech and eCommerce clients",
+        clients: ["Chain8", "AeroPartsNow"],
         bullets: [
-          "Kafka + WebSockets streaming (10–20ms) for 50+ market assets; real-time pipelines",
-          "Data lake (S3) for historical + realtime; Redshift/Spark backtesting & analytics",
-          "50+ AWS data pipelines (S3, Glue, RDS); near real-time sync via Step Functions + Lambda",
+          "Led two client engagements under NSK:",
+          "→ Chain8 – Kafka + Rust + FastAPI streaming stack for sub-20 ms inference; LightGBM/LSTM forecasting with live backtests across 50+ assets.",
+          "→ AeroPartsNow – AWS (S3/Glue/Lambda/RDS) pipelines with MLflow-tracked demand forecasting and supplier scoring (~35% planning lift).",
+          "Shared MLflow + Airflow backbone for retraining, monitoring, and Slack digests.",
         ],
       },
       {
-        company: "eCommerce & Retail",
-        role: "Data Migration",
-        period: "Jan 2022 — Feb 2023",
-        domain: "Data warehousing & migration",
+        company: "Coal India Limited",
+        role: "Operations Manager",
+        period: "Aug 2016 – Nov 2021",
+        domain: "Digital ops",
         bullets: [
-          "Migrated 5TB SQL Server → Redshift; automated ETL with S3, Glue, Lambda, SNS",
-          "5GB/day ingestion with monitoring, error tracking, and cost-effective RA3 compute",
-          "Python ETL for incremental/history loads; partitioning & indexing for performance",
+          "eTendering → 50% faster cycles; ₹10+ cr e-procurement.",
+          "Realtime dashboards for 120+ programs; 30k+ training-days.",
+          "Heavy-machinery spare-parts optimization across CCL depots using intermittent-demand forecasting and (s,S) policies; standardized a monthly planning playbook.",
         ],
       },
-      {
-        company: "Coal India Limited (CIL)",
-        role: "Program Coordinator / Operations Manager",
-        period: "Aug 2016 — Nov 2021",
-        domain: "eTendering, Training Analytics, Construction Project Ops",
-        bullets: [
-          "Drove digital procurement transformation by initiating an eTendering system at IICM, collaborating with cross-functional teams to move towards a data-driven procurement model — reduced cycle time by 50% while enhancing transparency and accountability; Rs. 10 crores worth of tenders annually processed through the system.",
-          "Designed and deployed a real-time training dashboard, tracking 120+ programs annually and 30,000+ participant training days; provided leadership with actionable metrics for planning and resource allocation.",
-          "Program-managed collaborations with top national consultancies (CPWD, CMPDI) to deliver projects worth Rs. 18 crores in a 3-year timeline, ensuring budget adherence, contract compliance, and reporting.",
-          "Bridged technical implementation (dashboards, systems integration) with strategic leadership — ensuring systems were reliable, scalable, and aligned with organizational goals."
-        ],
-      },
-    ],
-    achievements: [
-      "IQC 2024: Qualified to Stage 2 (top ~20% globally) at WorldQuant BRAIN",
-    ],
-    education: [
-      "Dual Degree, IIT Madras (2011–2016)",
-      "Class XII 96.5% (Maths 99.34%), Class X 93.7% (Maths 99%)",
-      "CAT 96.48 percentile (2023)",
-    ],
-    certifications: [
-      "Dataexpert.io Data Engineering Bootcamp (ongoing)",
-      "IBM Data Engineering Professional Certificate (ongoing)",
-      "Data Structures & Algorithms in Python — Coding Ninjas (completed)",
     ],
   },
 
-  // --- PROJECTS ---
+  // ---- Projects ----
   projects: [
+    // 1. SiteIQ Intelligence (latest)
     {
-      slug: "c8-airflow",
-      title: "c8-airflow · ML Pipelines at Scale",
+      slug: "siteiq-intelligence",
+      title: "SiteIQ — Predictive Maintenance & Intelligence Layer",
       summary:
-        "End-to-end orchestration of forecasting pipelines using Airflow + MLflow with reproducible runs and safe rollbacks.",
+        "AI-driven operational intelligence system powering predictive maintenance and warranty analytics for 10K+ IoT retail sites.",
       problem:
-        "Manual, brittle retraining across many locations caused drift, regressions, and slow iteration.",
+        "Frequent dispenser failures and rising warranty costs across large-scale retail networks.",
       approach: [
-        "Airflow DAGs for ingest → feature build → train → evaluate → register → deploy via MLflow.",
-        "Versioned data & environments for reproducibility; lineage & metrics tracked in MLflow.",
-        "Canary deploys and policy gates on evaluation + data quality checks.",
+        "Built an Airflow + MLflow pipeline for automated model retraining and deployment.",
+        "Implemented forecasting and anomaly-detection models using Prophet, LightGBM, and LSTM.",
+        "Designed a ClickHouse-based intelligence layer with optimized partitions and materialized views for sub-second analytics.",
       ],
-      challenges: [
-        "Coordinating location-scoped jobs while containing infra cost.",
-        "Avoiding model sprawl; keeping parameters/artifacts traceable.",
-      ],
-      optimizations: [
-        "Batch windowing, DAG concurrency tuning, backfill/catchup strategies.",
-        "Artifact dedupe & retention policies; metric-based early stopping.",
-      ],
-      impact: "Consistent retrains with auditable lineage; fewer failures and faster iteration.",
-      tech: ["Airflow", "MLflow", "Python", "AWS"],
-      images: ["/projects/c8-airflow/1.jpg", "/projects/c8-airflow/2.jpg"],
+      impact:
+        "Delivered proactive maintenance alerts (>90% accuracy) and reduced query latency by ~50%, enabling near-real-time operational visibility.",
+      tech: ["Python", "Airflow", "MLflow", "ClickHouse", "Prophet", "LightGBM", "LSTM"],
+      tags: ["MLOps", "Forecasting", "Anomaly Detection", "Operational Analytics"],
     },
+
+    // 2. Atlas Agentic Data Engineer
     {
-      slug: "c8-datalake",
-      title: "c8-datalake · ClickHouse Lake & Analytics",
+      slug: "atlas-agentic-data-engineer",
+      title: "Atlas — Agentic Data Engineering Agent",
       summary:
-        "High-performance analytics on S3-backed ClickHouse tuned via materialized views, partitions, and dedupe.",
-      problem:
-        "Slow exploratory queries and rising compute on large, append-heavy tables.",
+        "Autonomous agent that orchestrates EOD market-data ingestion, validation, and alerting with intelligent recovery and reporting.",
+      problem: "Manual and error-prone EOD ingestion for multiple financial datasets.",
       approach: [
-        "Modeled fact/dimension tables; ingest via Kafka/S3 stages.",
-        "Materialized views, partitioning, TTLs; compression codecs for balance.",
+        "Automated fetch → validation → publish cycles through Airflow agents.",
+        "Integrated Slack and metadata lineage for monitoring and recovery.",
+        "Built LLM-based orchestration to summarize data-quality reports.",
       ],
-      challenges: [
-        "Join-heavy queries with skew; cold starts from object storage.",
-      ],
-      optimizations: [
-        "Hot subsets, pre-aggregations for frequent GROUP BYs; dictionary encoding.",
-        "Query hints, memory limits; background merge tuning.",
-      ],
-      impact: "Faster median query times and lower storage/compute overhead.",
-      tech: ["ClickHouse", "S3", "Kafka", "Python"],
-      images: ["/projects/c8-datalake/1.jpg"],
+      impact:
+        "Achieved fully automated EOD ingestion and validation for 50+ assets, reducing manual effort by >80%.",
+      tech: ["Python", "Airflow", "ClickHouse", "Slack API", "LLMs (tools)"],
+      tags: ["Agentic AI", "Pipelines", "Data Quality", "Automation"],
     },
+
+    // 3. Lens AI Research Assistant
     {
-      slug: "inglorious_crypto",
-      title: "inglorious_crypto · Low-Latency Market Data",
+      slug: "lens-ai-research-assistant",
+      title: "Lens — AI Financial Research Assistant",
       summary:
-        "Kafka + WebSocket streaming for many assets with ms-level end-to-end latency and an S3→Redshift + Spark backtesting lake.",
-      problem:
-        "Traders needed real-time streams alongside reliable historical data for backtesting & analytics.",
+        "Agentic workflow for automated forecasting, backtesting, and narrative generation in financial research.",
       approach: [
-        "WebSocket fan-in → Kafka topics → consumers for ETL and fan-out.",
-        "Time-partitioned S3 lake; compaction; Redshift/Spark analytics.",
+        "Used RAG over market datasets and notebooks to enable contextual reasoning.",
+        "Automated forecasting and backtesting (LightGBM, LSTM) with ranking logic.",
+        "Generated interpretive summaries using LLMs with guardrails and evaluation checks.",
       ],
-      challenges: [
-        "Bursty market opens, out-of-order events, schema evolution.",
-      ],
-      optimizations: [
-        "Producer/consumer acks & batching; compression; idempotent writes.",
-        "Vectorized Spark reads; manifest loads to Redshift.",
-      ],
-      impact: "Consistent low-latency streams and fast historical analytics.",
-      tech: ["Kafka", "WebSocket", "S3", "Redshift", "Spark", "Python"],
-      images: ["/projects/inglorious_crypto/1.jpg", "/projects/inglorious_crypto/2.jpg"],
+      impact:
+        "Enabled continuous research automation and data-driven narrative generation for quantitative analysts.",
+      tech: ["Python", "LLMs", "LightGBM", "LSTM", "Backtesting"],
+      tags: ["GenAI", "Finance", "Research", "Automation"],
     },
+
+    // 4. Chain8 Streaming Inference
     {
-      slug: "anomaly_lightgbm",
-      title: "Anomaly Detection · LightGBM/Prophet/LSTM",
+      slug: "chain8-low-latency-inference",
+      title: "Chain8 — Low-Latency Streaming Inference",
       summary:
-        "Anomaly detection & forecasting stack with classical + DL models, tracked/versioned in MLflow.",
-      problem:
-        "Rule-based alarms missed operational anomalies; needed forecasting + robust anomaly scoring.",
+        "Rust-based streaming stack delivering sub-20 ms inference for real-time stock and crypto price signals.",
       approach: [
-        "Features for seasonality/trend/holiday; rolling windows.",
-        "Prophet/LGBM/LSTM ensembles; residual-based anomaly scores.",
-        "Model registry + batch/adhoc scoring endpoints.",
+        "Deployed Kafka + Rust + FastAPI microservices for concurrent event processing.",
+        "Integrated TimescaleDB and S3-based warehouse for historical and real-time views.",
       ],
-      challenges: [
-        "Cold starts, sparse segments, holiday shifts; minimize false positives.",
-      ],
-      optimizations: [
-        "Per-segment hyper-params; quantile loss; residual smoothing.",
-        "Alert aggregation windows and SLO budgets.",
-      ],
-      impact: "Improved anomaly precision with clear, explainable alerts.",
-      tech: ["LightGBM", "Prophet", "LSTM", "Airflow", "MLflow", "Python"],
-      images: ["/projects/anomaly_lightgbm/1.jpg"],
+      impact:
+        "Reduced end-to-end latency to <20 ms and enabled scalable live model serving across 50+ assets.",
+      tech: ["Rust", "FastAPI", "Kafka", "TimescaleDB", "S3", "Redshift"],
+      tags: ["Streaming", "Real-Time", "Inference", "Infra"],
     },
+
+    // 5. AeroPartsNow Inventory Intelligence
     {
-      slug: "atlas-agent",
-      title: "Atlas · Data Engineering Agent",
+      slug: "apn-inventory-intelligence",
+      title: "AeroPartsNow — Inventory Intelligence",
       summary:
-        "Assistant that watches pipelines, surfaces issues, and recommends fixes — lightweight, explainable observability.",
-      problem:
-        "Ops visibility fragmented across logs/metrics/DAG UIs; slow response to issues.",
+        "ML-powered demand-forecasting and replenishment alerts for aftermarket e-commerce parts.",
       approach: [
-        "Ingest events from schedulers/ETL; rules + LLM prompts summarize state.",
-        "Explainable suggestions (no auto-remediation) with links to run logs.",
+        "Developed pipelines on AWS (S3, Glue, RDS, Lambda) for continuous data updates.",
+        "Implemented MLflow-tracked forecasting models for demand and supplier scoring.",
       ],
-      challenges: [
-        "Signal vs noise in alerts; prompt reliability to avoid hallucinations.",
+      impact:
+        "Improved inventory planning efficiency by ~35% and automated weekly procurement alerts.",
+      tech: ["Python", "AWS (S3/Glue/Lambda/RDS)", "MLflow"],
+      tags: ["Forecasting", "eCommerce", "Supply Chain", "AWS"],
+    },
+
+    // 6. CCL Heavy-Machinery Inventory Optimization (simplified)
+    {
+      slug: "ccl-inventory-optimization",
+      title: "CCL — Heavy-Machinery Inventory Optimization",
+      summary:
+        "ML-based spare-parts planning system for heavy equipment across CCL depots.",
+      approach: [
+        "Consolidated depot-level issue-return data and trained intermittent-demand forecasting models.",
+        "Optimized reorder policies and safety-stock levels using Croston/TSB and service-level constraints.",
       ],
-      optimizations: [
-        "Feedback loops on suggestion quality; prompt templates; cached summaries.",
-      ],
-      impact: "Faster mean-time-to-insight and clearer handoffs; foundation for future auto-fixes.",
-      tech: ["TypeScript", "Python", "Airflow APIs", "LLM APIs"],
-      images: ["/projects/atlas/1.jpg", "/projects/atlas/2.jpg"],
+      impact:
+        "Reduced stockouts on critical spares and standardized monthly procurement planning.",
+      tech: ["Python", "Pandas", "Prophet", "Croston/TSB", "Power BI"],
+      tags: ["Inventory", "Forecasting", "Optimization", "Operations"],
     },
   ] as Project[],
 
-  // --- BLOGS (5 posts) ---
-  blogs: [
-    {
-      slug: "airflow-mlflow-2000-sites",
-      title: "What It Takes to Orchestrate ML for 2000+ Sites (Airflow + MLflow)",
-      date: "2025-07-15",
-      readingTimeMins: 9,
-      tags: ["Airflow", "MLflow", "MLOps", "Pipelines"],
-      hero: "/blog/airflow-mlflow-2000-sites/hero.jpg",
-      excerpt:
-        "Design notes from production: versioned data, reproducible runs, canary gates, and pragmatic failure handling for massive retrains.",
-      content: [
-        { type: "p", text: "Coordinating thousands of location-scoped retrains sounds glamorous—until you hit cost blowups and brittle DAGs." },
-        { type: "h2", text: "Key Design Choices" },
-        {
-          type: "ul", items: [
-            "A single DAG per domain with dynamic mapping for locations; capped concurrency.",
-            "MLflow for metrics, lineage, and model registry—nothing ships without tracked evidence.",
-            "Strict canary deploys with evaluation + data quality gates.",
-          ]
-        },
-        { type: "h2", text: "Failure Handling that Works" },
-        {
-          type: "ul", items: [
-            "Idempotent tasks with artifact dedupe and TTLs.",
-            "Backfills via catchup windows; avoid \"infinite yesterday\".",
-            "Alert budgets that page only when SLOs degrade, not for every whisper.",
-          ]
-        },
-        { type: "p", text: "The result: consistent retrains with auditable lineage and fewer pager rotations." },
-      ],
-    },
-    {
-      slug: "clickhouse-tuning-field-notes",
-      title: "ClickHouse in the Wild: Field Notes on Making Queries ~50% Faster",
-      date: "2025-06-24",
-      readingTimeMins: 7,
-      tags: ["ClickHouse", "Analytics", "Databases"],
-      hero: "/blog/clickhouse-tuning-field-notes/hero.jpg",
-      excerpt:
-        "Materialized views, partitions, and dedup aren’t stickers—here’s how they actually reduce cost and latency in practice.",
-      content: [
-        { type: "h2", text: "Model Tables for the Questions You’ll Ask" },
-        { type: "p", text: "Skew and join explosions vanish when facts/dims are shaped to the queries that matter." },
-        {
-          type: "ul", items: [
-            "MV pre-aggregations for hot dashboards.",
-            "Partitioning by date + id to bound merges.",
-            "ZSTD + codecs: balance storage and CPU cycles.",
-          ]
-        },
-        { type: "h2", text: "Ops Tips" },
-        {
-          type: "ul", items: [
-            "Hot subsets to dodge cold S3 starts.",
-            "Query memory limits and grace re-tries.",
-            "Observe background merges—don’t let them starve selects.",
-          ]
-        },
-      ],
-    },
-    {
-      slug: "kafka-websocket-20ms",
-      title: "Streaming at 10–20 ms: Kafka + WebSockets, Lessons Learned",
-      date: "2025-05-30",
-      readingTimeMins: 8,
-      tags: ["Kafka", "Streaming", "WebSockets", "Low Latency"],
-      hero: "/blog/kafka-websocket-20ms/hero.jpg",
-      excerpt:
-        "Real-time market data for 50+ assets means solving bursty opens, backpressure, and idempotency—without breaking the bank.",
-      content: [
-        { type: "h2", text: "Architecture in Brief" },
-        {
-          type: "ul", items: [
-            "WS fan-in → Kafka → consumers (ETL, fan-out, storage).",
-            "Time-partitioned S3 for backtests; Redshift/Spark for analysis.",
-          ]
-        },
-        { type: "h2", text: "Keeping Latency Honest" },
-        {
-          type: "ul", items: [
-            "End-to-end markers, not just broker lag.",
-            "Producer acks, linger.ms, and compression tuned per topic.",
-            "Idempotent writes with ordered keys; handle out-of-order events.",
-          ]
-        },
-      ],
-    },
-    {
-      slug: "forecasting-anomaly-stack",
-      title: "Forecasting + Anomaly Detection: A Stack that Actually Ships",
-      date: "2025-06-05",
-      readingTimeMins: 10,
-      tags: ["Forecasting", "Anomaly Detection", "LightGBM", "Prophet", "LSTM"],
-      hero: "/blog/forecasting-anomaly-stack/hero.jpg",
-      excerpt:
-        "Ensembles over rule engines: residual-based anomaly scores, quantile losses, and why false positives are your real enemy.",
-      content: [
-        { type: "p", text: "Rules get you started; residuals keep you honest. We mix classical and DL models for robust signals." },
-        { type: "h2", text: "Recipe" },
-        {
-          type: "ul", items: [
-            "Features for seasonality, trend, holidays; rolling windows per segment.",
-            "Prophet/LGBM/LSTM ensembles; MLflow to track and compare.",
-            "Residual smoothing and alert aggregation to reduce noise.",
-          ]
-        },
-        { type: "h2", text: "Cold Starts & Sparse Segments" },
-        {
-          type: "ul", items: [
-            "Borrow strength across segments; use priors.",
-            "Fallback models with conservative thresholds.",
-          ]
-        },
-      ],
-    },
-    {
-      slug: "redshift-migration-5tb",
-      title: "5 TB to Redshift: A Pragmatic Migration Playbook",
-      date: "2025-04-18",
-      readingTimeMins: 6,
-      tags: ["Redshift", "ETL", "AWS", "Data Warehouse"],
-      hero: "/blog/redshift-migration-5tb/hero.jpg",
-      excerpt:
-        "From on-prem SQL Server to RA3-backed Redshift with 5GB/day feeds: patterns that spared us pain.",
-      content: [
-        { type: "h2", text: "Pipeline Basics" },
-        {
-          type: "ul", items: [
-            "S3 staging + manifest loads; partitioned by dt/source.",
-            "Glue/Lambda orchestration for incremental + history loads.",
-            "Idempotent upserts and late-arrival handling.",
-          ]
-        },
-        { type: "h2", text: "Performance & Cost" },
-        {
-          type: "ul", items: [
-            "Sort/dist keys that match your biggest joins.",
-            "RA3 for separated storage/compute; pause/resize policies.",
-            "Monitoring that focuses on user-facing SLAs, not vanity metrics.",
-          ]
-        },
-      ],
-    },
-  ],
+  // ---- Blogs ----
+  blogs: [] as Blog[],
+
+  // ---- Contact ----
   contact: {
-    hero_title: "Let’s build something reliable",
-    hero_description: "I design data platforms, streaming systems, and ML pipelines. The fastest way to reach me is email; I also respond on LinkedIn.",
-    availability: "Open to data engineering consulting (pipelines, streaming, ClickHouse, forecasting) and full-time roles aligned with platform reliability and ML operations."
-  }
-};
+    hero_title: "Let’s build production ML that moves business metrics",
+    hero_description:
+      "Open to collaborations & roles in Data Science / ML / GenAI. Based in India (IST). Prefer email or LinkedIn. Rapid prototypes welcome.",
+    headline: "Let’s build production ML that moves business metrics.",
+    availability: "Open to collaborations & roles in Data Science / ML / GenAI.",
+    location: "India (IST, UTC+5:30)",
+    note: "Best via email or LinkedIn. Open to rapid prototypes and pilot engagements.",
+  },
+} as const;
+
+export type SiteConfig = typeof siteConfig;
